@@ -2,14 +2,14 @@ spring:
   application:
     name: api-inventarios
   datasource:
-    url: jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.sa-santiago-1.oraclecloud.com))(connect_data=(service_name=g5f006cbda6ad3b_bdyjean_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+    url: jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.sa-santiago-1.oraclecloud.com))(connect_data=(service_name=g4db3c3940eb1f5_bbd_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
     username: ADMIN
     password: Duoc.123456789
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
 server:
   port: 28100
