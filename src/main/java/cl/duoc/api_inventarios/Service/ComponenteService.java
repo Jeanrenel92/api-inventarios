@@ -49,27 +49,27 @@ public class ComponenteService {
     }
 
     public ComponenteDTO consultarStock(Long id) {
-        Componente c = componenteRepository.findById(id)
+        Componente componente = componenteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Componente con id=" + id + " no encontrado"));
 
         List<OrdenDTO> ordenes = List.of();
 
-        if (c.getUnidades() < 3) {
-            List<OrdenDTO> todas = restTemplate.exchange(
-                    API_COMPRAS_URL + "fabricante/" + c.getFabricanteId(),
+        if (componente.getUnidades() < 3) {
+            List<OrdenDTO> listaOrdenes = restTemplate.exchange(
+                    API_COMPRAS_URL + "fabricante/" + componente.getFabricanteId(),
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<OrdenDTO>>() {}
             ).getBody();
 
-            if (todas != null) {
-                ordenes = todas.stream()
+            if (listaOrdenes != null) {
+                ordenes = listaOrdenes.stream()
                         .filter(o -> "EN_TRANSITO".equals(o.getEstado())
                                 || "ADUANA".equals(o.getEstado()))
                         .toList();
             }
         }
 
-        return new ComponenteDTO(c.getNombre(), c.getUnidades(), c.getEstado(), ordenes);
+        return new ComponenteDTO(componente.getNombre(), componente.getUnidades(), componente.getEstado(), ordenes);
     }
 
     public Componente actualizarComponente(Long id, Componente componente) {
