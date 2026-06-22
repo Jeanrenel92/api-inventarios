@@ -4,6 +4,9 @@ package cl.duoc.api_inventarios.Controller;
 import cl.duoc.api_inventarios.Model.Componente;
 import cl.duoc.api_inventarios.Model.ComponenteDTO;
 import cl.duoc.api_inventarios.Service.ComponenteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,10 @@ public class ComponenteController {
     private ComponenteService service;
 
     @PostMapping
+    @Operation(summary = "Registrar una nueva orden", description = "Permite ingresar una nueva orden en el sistema")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Orden creada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")})
     public ResponseEntity<Componente> ingresar(@Valid @RequestBody Componente componente) {
         Componente compNuevo = service.ingresarComponente(componente);
         if (compNuevo != null) {
