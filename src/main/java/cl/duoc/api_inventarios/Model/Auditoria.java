@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "AUDITORIA")
+// elementos comentados para poder probar la api, ya que
+// esto aun no se implementa y no estan creadas las tablas en la bbdd
+//@Entity
+//@Table(name = "AUDITORIA")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
