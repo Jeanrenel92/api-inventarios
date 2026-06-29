@@ -37,7 +37,7 @@ public class Componente {
     private Integer unidades;
 
     @NotBlank(message = "El estado debe ser: En Stock, Asignado, Agotado")
-    @Pattern(regexp = "En Stock|Asignado|Agotado",
+    @Pattern(regexp = "En_Stock|Asignado|Agotado",
             message = "El estado debe ser: En Stock, Asignado, Agotado")
     @Column(name = "ESTADO", nullable = false)
     private String estado;
