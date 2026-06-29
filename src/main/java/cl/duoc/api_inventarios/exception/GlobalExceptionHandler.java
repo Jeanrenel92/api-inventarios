@@ -1,4 +1,4 @@
-package cl.duoc.api_inventarios.config;
+package cl.duoc.api_inventarios.exception;
 
 import lombok.extern.slf4j.Slf4j; // <-- Importación de Lombok
 import org.springframework.http.HttpStatus;
