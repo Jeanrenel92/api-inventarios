@@ -37,10 +37,13 @@ public class ComponenteService {
         return componenteRepository.findAll();
     }
 
+
     public Optional<Componente> buscarPorId(Long id) {
         log.debug("Buscando componente con ID: {} en la base de datos", id);
         return componenteRepository.findById(id);
     }
+
+
 
     public Componente ingresarComponente(Componente componente) {
         log.info("Iniciando validación para ingresar nuevo componente con fabricante_id: {}", componente.getFabricanteId());
@@ -56,6 +59,8 @@ public class ComponenteService {
         //registrarAuditoria(guardado.getId(), null, guardado.getEstado(), null, guardado.getUnidades());
         return guardado;
     }
+
+
 
     public ComponenteDTO consultarStock(Long id) {
         Componente c = componenteRepository.findById(id)
@@ -96,6 +101,8 @@ public class ComponenteService {
         return new ComponenteDTO(c.getNombre(), c.getUnidades(), c.getEstado(), ordenes);
     }
 
+
+
     public Componente actualizarComponente(Long id, Componente componente) {
         log.info("Intentando actualizar componente ID: {}", id);
 
@@ -118,6 +125,8 @@ public class ComponenteService {
                 });
     }
 
+
+    
     public void eliminarComponente(Long id) {
         log.info("Iniciando proceso de eliminación para componente ID: {}", id);
 
