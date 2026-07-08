@@ -18,38 +18,22 @@ public class AuditoriaService {
     }
 
 
-    public List<Auditoria> listarTodosAudit() {
+    public List<Auditoria> listarRegistros() {
         return repository.findAll();
     }
 
 
-
-    public Auditoria buscarAuditPorId(Long id) {
+    public Auditoria buscarRegistroPorId(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Auditoria no encontrada: " + id));
+                .orElseThrow(() -> new RuntimeException("Registro no encontrado: " + id));
     }
 
 
-
-    public Auditoria crearAuditoria(Auditoria auditoria) {
+    public Auditoria registrarAccion(Auditoria auditoria) {
         return repository.save(auditoria);
     }
 
-    public Auditoria actualizarAuditoria(Long id, Auditoria auditoria) {
-        return repository.findById(id)
-                .map(existente -> {
-                    existente.setId(id);
-                    return repository.save(auditoria);
-                })
-                .orElseThrow(() -> new RuntimeException("Audiotria con id=" + id + " no encontrada"));
-
-    }
-
-    public void eliminarAudit(Long id) {
-        repository.deleteById(id);
-    }
-
-    public List<Auditoria> filtrarAuditPorFecha(LocalDate inicio, LocalDate fin) {
-        return repository.findByFechaBetween(inicio, fin);
+    public List<Auditoria> filtrarRegistrosPorFecha(LocalDate inicio, LocalDate fin) {
+        return repository.findByFechaBetween(inicio.atStartOfDay(), fin.atTime(23, 59, 59, 999_999_999));
     }
 }
