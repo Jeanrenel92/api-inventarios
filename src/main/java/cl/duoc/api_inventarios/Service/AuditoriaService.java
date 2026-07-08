@@ -36,4 +36,6 @@ public class AuditoriaService {
     public List<Auditoria> filtrarRegistrosPorFecha(LocalDate inicio, LocalDate fin) {
         return repository.findByFechaBetween(inicio.atStartOfDay(), fin.atTime(23, 59, 59, 999_999_999));
     }
+
+    Caused by: java.sql.SQLException: ORA-12506: TNS: el listener ha rechazado la conexión según el filtrado ACL del servicio (CONNECTION_ID=CJ0DqX9PRYenETqRiKapLg==
 }
