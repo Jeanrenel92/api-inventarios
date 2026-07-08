@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "COMPONENTES")
 @Data
@@ -28,8 +30,8 @@ public class Componente {
 
     @NotNull(message = "El precio no puede estar vacío")
     @Positive(message = "El precio no acepta valores negativos o cero")
-    @Column(name = "PRECIO", nullable = false)
-    private Double precio;
+    @Column(name = "PRECIO", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
     @NotNull(message = "Las unidades no pueden estar vacías")
     @PositiveOrZero(message = "Las unidades no aceptan valores negativos")
