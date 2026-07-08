@@ -29,7 +29,7 @@ public class Componente {
     @NotNull(message = "El precio no puede estar vacío")
     @Positive(message = "El precio no acepta valores negativos o cero")
     @Column(name = "PRECIO", nullable = false)
-    private Float precio;
+    private Double precio;
 
     @NotNull(message = "Las unidades no pueden estar vacías")
     @PositiveOrZero(message = "Las unidades no aceptan valores negativos")
