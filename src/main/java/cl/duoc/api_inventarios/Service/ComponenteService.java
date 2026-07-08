@@ -4,10 +4,7 @@ import cl.duoc.api_inventarios.Model.Auditoria;
 import cl.duoc.api_inventarios.Model.Componente;
 import cl.duoc.api_inventarios.Model.ComponenteDTO;
 import cl.duoc.api_inventarios.Model.OrdenDTO;
-//import cl.duoc.api_inventarios.Repository.AuditoriaRepository;
 import cl.duoc.api_inventarios.Repository.ComponenteRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,8 +22,8 @@ public class ComponenteService {
     @Autowired
     private ComponenteRepository componenteRepository;
 
-    //@Autowired
-    //private AuditoriaRepository auditoriaRepository;
+    @Autowired
+    private AuditoriaService auditoriaService;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -56,7 +53,7 @@ public class ComponenteService {
         Componente guardado = componenteRepository.save(componente);
         log.info("Componente guardado exitosamente en BD con el ID asignado: {}", guardado.getId());
 
-        //registrarAuditoria(guardado.getId(), null, guardado.getEstado(), null, guardado.getUnidades());
+        registrarAuditoria(guardado.getId(), null, guardado.getEstado(), null, guardado.getUnidades());
         return guardado;
     }
 
@@ -116,7 +113,7 @@ public class ComponenteService {
                     log.info("Componente ID: {} actualizado. Estado cambió de '{}' a '{}'. Unidades cambiaron de {} a {}",
                             id, estadoInicial, componente.getEstado(), unidadInicial, componente.getUnidades());
 
-                    //registrarAuditoria(id, estadoInicial, componente.getEstado(), unidadInicial, componente.getUnidades());
+                    registrarAuditoria(id, estadoInicial, componente.getEstado(), unidadInicial, componente.getUnidades());
                     return componente;
                 })
                 .orElseThrow(() -> {
@@ -126,7 +123,7 @@ public class ComponenteService {
     }
 
 
-    
+
     public void eliminarComponente(Long id) {
         log.info("Iniciando proceso de eliminación para componente ID: {}", id);
 
@@ -143,7 +140,7 @@ public class ComponenteService {
                     componenteRepository.deleteById(id);
                     log.info("Componente ID: {} eliminado exitosamente de la base de datos.", id);
 
-                    /* registrarAuditoria(id, c.getEstado(), "ELIMINADO", c.getUnidades(), null); */
+                    registrarAuditoria(id, c.getEstado(), "ELIMINADO", c.getUnidades(), null);
                     return c;
                 })
                 .orElseThrow(() -> {
@@ -152,10 +149,10 @@ public class ComponenteService {
                 });
     }
 
-/*
+
     private void registrarAuditoria(Long componenteId, String estadoInicial,
                                     String estadoDespues, Integer unidadInicial,
                                     Integer unidadDespues) {
-        auditoriaRepository.save(new Auditoria(componenteId, estadoInicial, estadoDespues, unidadInicial, unidadDespues));
-    }*/
+        auditoriaService.registrarAccion(new Auditoria(componenteId, estadoInicial, estadoDespues, unidadInicial, unidadDespues));
+    }
 }
