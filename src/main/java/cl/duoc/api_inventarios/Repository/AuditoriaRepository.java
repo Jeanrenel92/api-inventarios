@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
 
-    List<Auditoria> findByFechaBetween(LocalDate inicio, LocalDate fin);
+    List<Auditoria> findByFechaBetween(LocalDateTime inicio, LocalDateTime fin);
 }

@@ -1,5 +1,6 @@
 package cl.duoc.api_inventarios.Model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Componente {
 
+
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
