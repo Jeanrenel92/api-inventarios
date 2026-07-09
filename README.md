@@ -15,9 +15,9 @@ Microservicio REST para la gestión de inventario de componentes (CloudTech). Fo
 
 ```
 cl.duoc.api_inventarios
-├── Controller/      → ComponenteController
-├── Service/         → ComponenteService
-├── Repository/      → ComponenteRepository
+├── Controller/      → ComponenteController, AuditoriaController
+├── Service/         → ComponenteService, AuditoriaService
+├── Repository/      → ComponenteRepository, AuditoriaRepository
 ├── Model/           → Componente, ComponenteDTO, OrdenDTO, Auditoria
 ├── exception/       → GlobalExceptionHandler
 └── config/          → OpenApiConfig
@@ -40,10 +40,21 @@ cl.duoc.api_inventarios
 Respuesta resumida de stock: `nombre`, `unidades`, `estado`, `ordenesEnTransito` (List<OrdenDTO>).
 
 ### Auditoria
-Entidad preparada para registrar cambios de estado/unidades. Tabla ya creada en BD (ver script DDL), pero `@Entity`/`@Table` siguen comentados en el código — falta descomentar y habilitar `AuditoriaRepository`.
+Entidad activa que registra el historial de cambios de estado y unidades de un componente.
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| id | Long | autogenerado |
+| componenteId | Long | `nullable = false` |
+| estadoInicial | String | estado previo al cambio |
+| estadoDespues | String | `nullable = false` |
+| unidadInicial | Integer | unidades previas |
+| unidadDespues | Integer | unidades posteriores |
+| fecha | LocalDateTime | asignada automáticamente en `@PrePersist`, no editable por el cliente |
 
 ## Endpoints
 
+### Componentes
 Base path: `/api/v1/inventarios`
 
 | Método | Ruta | Descripción |
@@ -55,11 +66,22 @@ Base path: `/api/v1/inventarios`
 | PUT | `/{id}` | Actualizar componente |
 | DELETE | `/{id}` | Eliminar componente |
 
+### Auditoría
+Base path: `/api/v1/auditorias`
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/` | Registrar una nueva acción de auditoría |
+| GET | `/` | Listar todos los registros de auditoría |
+| GET | `/{id}` | Buscar registro de auditoría por ID |
+| GET | `/fecha?inicio=YYYY-MM-DD&fin=YYYY-MM-DD` | Listar registros dentro de un rango de fechas |
+
 ### Reglas de negocio
 
-- **Creación**: rechaza si `fabricanteId` ya existe (`existsByFabricanteId`).
+- **Creación de componente**: rechaza si `fabricanteId` ya existe (`existsByFabricanteId`).
 - **Consulta de stock**: si `unidades < 3`, consulta `api-compras` para obtener órdenes en estado `EN_TRANSITO` o `ADUANA` del mismo `fabricanteId`. Si la API externa falla, se captura la excepción y se responde igual (sin órdenes).
-- **Eliminación**: rechazada si el componente está en estado `Agotado` (registro contable congelado para cierre ISO de fin de año).
+- **Eliminación de componente**: rechazada si el componente está en estado `Agotado` (registro contable congelado para cierre ISO de fin de año).
+- **Auditoría**: cada registro es inmutable una vez persistido; `fecha` se asigna automáticamente y no puede sobrescribirse desde el request. La búsqueda por rango de fechas usa el inicio del día (`atStartOfDay`) hasta el fin del día (`23:59:59.999999999`) de las fechas indicadas.
 
 ## Integración externa
 
@@ -77,6 +99,7 @@ GET http://localhost:28099/api/v1/proveedores/fabricante/{fabricanteId}
 |---|---|
 | `IllegalArgumentException` | 400 Bad Request |
 | `NoSuchElementException` | 404 Not Found |
+| `RuntimeException` (registro no encontrado) | 404 Not Found |
 | `Exception` (genérica) | 500 Internal Server Error |
 
 Cuerpo de respuesta estándar: `fecha`, `status`, `error`, `mensaje`, `ruta`.
@@ -156,6 +179,10 @@ CREATE TABLE AUDITORIA (
 COMMENT ON TABLE AUDITORIA IS 'Tabla transaccional para el registro de cambios históricos en los componentes.';
 COMMENT ON COLUMN AUDITORIA.FECHA_REGISTRO IS 'Fecha y hora exacta del cambio, asignada por @PrePersist en Java o por defecto en BD.';
 ```
+
+---
+
+Proyecto académico — Duoc UC.
 
 ---
 
