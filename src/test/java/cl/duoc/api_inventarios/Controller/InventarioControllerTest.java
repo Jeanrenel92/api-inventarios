@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 // Carga solo la capa Web (Controlador) para mas rapidez
 @WebMvcTest(ComponenteController.class)
-public class inventarioControllerTest {
+public class InventarioControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
