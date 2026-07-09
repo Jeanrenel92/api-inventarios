@@ -15,7 +15,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API del Inventario")
+                        .title("API de gestion de Inventario y Auditoria")
                         .description("Ahí se gestionarán el inventario y las auditorias")
                         .version("1.0")
                         .contact(new Contact()
