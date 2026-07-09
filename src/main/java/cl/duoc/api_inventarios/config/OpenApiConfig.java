@@ -16,7 +16,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API del Inventario")
-                        .description("Ahí se gestionarán todas las órdenes de compra")
+                        .description("Ahí se gestionarán el inventario y las auditorias")
                         .version("1.0")
                         .contact(new Contact()
                                 .name("GRUPO2_Inv")
