@@ -51,4 +51,6 @@ public class AuditoriaService {
         log.debug("[Service] {} registros encontrados", registros.size());
         return registros;
     }
+
+    Caused by: java.sql.SQLException: ORA-12506: TNS: el listener ha rechazado la conexión según el filtrado ACL del servicio (CONNECTION_ID=CJ0DqX9PRYenETqRiKapLg==
 }
